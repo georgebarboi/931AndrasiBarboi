@@ -34,18 +34,21 @@ public class AppTest
     }
 
     @Test
-    public void test_shouldSuccessfullyAddAssignment() throws ValidatorException {
-        TemaLabValidator vs=new TemaLabValidator();
-        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
-        TemaLab temaLab = new TemaLab(
-                1,
-                "temaLab",
-                6,
-                4
+    public void test_StudentAlreadyExists() throws ValidatorException {
+        StudentValidator vs=new StudentValidator();
+        StudentRepo studentRepo = new StudentRepo(vs);
+        Student student = new Student(
+                "testId",
+                "testName",
+                3112,
+                "testMail",
+                "testTeacher"
         );
-        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
-        temaLabRepo.save(temaLab);
-        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==1);
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        studentRepo.save(student);
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==1);
+        studentRepo.save(student);
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==1);
     }
 
     @Test
@@ -65,6 +68,63 @@ public class AppTest
             assertTrue(false);
         }catch(ValidatorException ex){
             assertTrue(ex.getMessage().contains("Grupa invalid"));
+        }
+    }
+    @Test
+    public void test_shouldThrowWhenGivenIncorrectStudentId(){
+        StudentValidator vs=new StudentValidator();
+        StudentRepo studentRepo = new StudentRepo(vs);
+        Student student = new Student(
+                "",
+                "testName",
+                -5,
+                "testMail",
+                "testTeacher"
+        );
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            studentRepo.save(student);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Id invalid"));
+        }
+    }
+    @Test
+    public void test_shouldThrowWhenGivenIncorrectStudentName(){
+        StudentValidator vs=new StudentValidator();
+        StudentRepo studentRepo = new StudentRepo(vs);
+        Student student = new Student(
+                "rewq",
+                "",
+                -5,
+                "testMail",
+                "testTeacher"
+        );
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            studentRepo.save(student);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Nume invalid"));
+        }
+    }
+    @Test
+    public void test_shouldThrowWhenGivenIncorrectStudentEmail(){
+        StudentValidator vs=new StudentValidator();
+        StudentRepo studentRepo = new StudentRepo(vs);
+        Student student = new Student(
+                "rqwe",
+                "testName",
+                -5,
+                "",
+                "testTeacher"
+        );
+        assertTrue(studentRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            studentRepo.save(student);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Email invalid"));
         }
     }
     @Test
@@ -97,4 +157,21 @@ public class AppTest
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void test_shouldSuccessfullyAddAssignment() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "temaLab",
+                6,
+                4
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        temaLabRepo.save(temaLab);
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==1);
+    }
+
+
 }
