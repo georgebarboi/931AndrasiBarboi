@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Unit test for Memory Repository
  */
-public class MemoryRepositoryTest
+public class AppTest
 {
     @Test
     public void test_shouldSuccessfullyAddStudent() throws ValidatorException {
