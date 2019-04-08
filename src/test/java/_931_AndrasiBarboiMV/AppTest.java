@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 public class AppTest
 {
     @Test
-    public void test_shouldSuccessfullyAddStudent() throws ValidatorException {
+    public void Test_shouldSuccessfullyAddStudent() throws ValidatorException {
         StudentValidator vs=new StudentValidator();
         StudentRepo studentRepo = new StudentRepo(vs);
         Student student = new Student(
