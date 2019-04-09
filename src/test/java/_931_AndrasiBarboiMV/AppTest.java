@@ -172,6 +172,130 @@ public class AppTest
         temaLabRepo.save(temaLab);
         assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==1);
     }
+    @Test
+    public void test_AssignmentAlreadyExists() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "temaLab",
+                6,
+                4
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        temaLabRepo.save(temaLab);
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==1);
+        temaLabRepo.save(temaLab);
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==1);
+    }
+    @Test
+    public void test_BadAssignmentDesc() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "",
+                6,
+                4
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Descriere tema invalida"));
+        }
+    }
+    @Test
+    public void test_BadAssignmentDesc2() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                null,
+                6,
+                4
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Descriere tema invalida"));
+        }
+    }
+    @Test
+    public void test_BadAssignmentSaptPredare() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "dasd",
+                6,
+                15
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Sapatamana predarii invalida"));
+        }
+    }
+    @Test
+    public void test_BadAssignmentSaptPredare2() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "dasd",
+                6,
+                -3
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Sapatamana predarii invalida"));
+        }
+    }
+    @Test
+    public void test_BadAssignmentTermenLimita() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "dasd",
+                15,
+                7
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Termen limita invalid"));
+        }
+    }
+    @Test
+    public void test_BadAssignmentTermenLimita2() throws ValidatorException {
+        TemaLabValidator vs=new TemaLabValidator();
+        TemaLabRepo temaLabRepo = new TemaLabRepo(vs);
+        TemaLab temaLab = new TemaLab(
+                1,
+                "dasd",
+                -2,
+                7
+        );
+        assertTrue(temaLabRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        try{
+            temaLabRepo.save(temaLab);
+            assertTrue(false);
+        }catch(ValidatorException ex){
+            assertTrue(ex.getMessage().contains("Termen limita invalid"));
+        }
+    }
 
 
 }
