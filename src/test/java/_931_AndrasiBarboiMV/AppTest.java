@@ -1,6 +1,9 @@
 package _931_AndrasiBarboiMV;
 
 
+import Repository.MemoryRepository.NotaRepo;
+import Validator.NotaValidator;
+import _931_AndrasiBarboiMV.Domain.Nota;
 import _931_AndrasiBarboiMV.Domain.Student;
 import _931_AndrasiBarboiMV.Domain.TemaLab;
 import _931_AndrasiBarboiMV.Exceptions.ValidatorException;
@@ -9,6 +12,8 @@ import _931_AndrasiBarboiMV.Repository.MemoryRepository.TemaLabRepo;
 import _931_AndrasiBarboiMV.Validator.StudentValidator;
 import _931_AndrasiBarboiMV.Validator.TemaLabValidator;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertTrue;
 
@@ -295,6 +300,22 @@ public class AppTest
         }catch(ValidatorException ex){
             assertTrue(ex.getMessage().contains("Termen limita invalid"));
         }
+    }
+
+    @Test
+    public void test_SuccessfullyAddGrade() throws ValidatorException {
+        Validator.NotaValidator vs=new NotaValidator();
+        Repository.MemoryRepository.NotaRepo notaRepo = new NotaRepo(vs);
+        Nota grade = new Nota(
+                1,
+                "testStudentName",
+                6,
+                9.0,
+                LocalDateTime.now()
+        );
+        assertTrue(notaRepo.findAll().spliterator().getExactSizeIfKnown()==0);
+        notaRepo.save(grade);
+        assertTrue(notaRepo.findAll().spliterator().getExactSizeIfKnown()==1);
     }
 
 
